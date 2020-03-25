@@ -1,2 +1,2 @@
 # twilio-functions
-for incoming calls + texts to our phone number; node.js, Twilio API, Airtable API
+hotline, for incoming calls + texts to a volunteer request phone number; node.js, Twilio API, Airtable API
