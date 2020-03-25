@@ -1,6 +1,7 @@
 // this Twilio serverless function (stateless! remembers nothing) is triggered when an incoming voice call goes to our Twilio number. 
 // it plays the initial audio message for a neighbor making a request, and then it records the audio response from the call
-// and it calls our next Twilio function after the recording is done 
+// and it calls our next Twilio function after the recording is done. The function is attached to the number in the Twilio console,
+// and the function is also written directly in the Twilio console.  
 
 'use strict';
 
