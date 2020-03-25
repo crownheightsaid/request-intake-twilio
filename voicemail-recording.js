@@ -1,5 +1,6 @@
 // this Twilio serverless function (stateless! remembers nothing) is triggered after a neighbor request voice call is finished
-// it sends the Twilio Call Sid, the URL of the audio recording, and the request phone number to Airtable
+// it sends the Twilio Call Sid, the URL of the audio recording, and the request phone number to Airtable.
+// The function is attached to the number in the Twilio console, and the function is written directly in the Twilio console.  
 
 'use strict';
 
