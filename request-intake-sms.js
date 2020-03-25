@@ -30,7 +30,7 @@ function createRecord() {
       console.error(err);
       return;
     }
-    console.log(record.getId()); // each row has an Airtable Record
+    console.log(record.getId()); // each record has a unique Airtable ID
     twiml.message("thank you for reaching out to crown heights mutual aid - a neighbor volunteer will follow up with you soon. stay safe!");
     callback(null, twiml);
   });
