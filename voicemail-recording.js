@@ -17,7 +17,7 @@ exports.handler = function(context, event, callback) {
     apiKey: context.AIRTABLE_API_KEY //set in our environment variables
  });
 
- var base = Airtable.base('AIRTABLE_BASE_ID');  // replace with our actual base! see Airtable API documentation
+ var base = Airtable.base('apppK7mrvMPcwtv6d'); 
  
  createRecord();
  
@@ -27,7 +27,8 @@ exports.handler = function(context, event, callback) {
     "Message": recordingUrl, // 'Field/column': content 
     "Phone": phone,
     "Text or Voice?": "voice",
-    "Twilio Call Sid": twilioSid
+    "Twilio Call Sid": twilioSid,
+    "Status": "Intake Needed"
   }, function(err, record) {
     if (err) {
       console.error(err);
