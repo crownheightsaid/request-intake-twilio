@@ -7,6 +7,7 @@ exports.handler = function(context, event, callback) {
   let twiml = new Twilio.twiml.MessagingResponse();
   let phone = event.From;
   let request = event.Body;
+  let twilioSid = event.SmsSid; //SMS unique ID
   
   console.log("INCOMING from " + phone);
   var Airtable = require('airtable'); // node module, dependency
@@ -24,7 +25,9 @@ function createRecord() {
   base('Requests').create({ // creates a record (row) in Airtable base
     "Message": request, // 'Field/column': content 
     "Phone": phone,
-    "Text or Voice?": "text"
+    "Text or Voice?": "text",
+    "Twilio Call Sid": twilioSid,
+    "Status": "Intake Needed"
   }, function(err, record) {
     if (err) {
       console.error(err);
