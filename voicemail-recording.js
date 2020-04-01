@@ -28,7 +28,7 @@ exports.handler = function(context, event, callback) {
     "Phone": phone,
     "Text or Voice?": "voice",
     "Twilio Call Sid": twilioSid,
-    "Status": "Intake Needed"
+    "Status": "Dispatch Needed"
   }, function(err, record) {
     if (err) {
       console.error(err);
