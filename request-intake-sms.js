@@ -27,7 +27,7 @@ function createRecord() {
     "Phone": phone,
     "Text or Voice?": "text",
     "Twilio Call Sid": twilioSid,
-    "Status": "Intake Needed"
+    "Status": "Dispatch Needed"
   }, function(err, record) {
     if (err) {
       console.error(err);
