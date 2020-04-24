@@ -16,25 +16,44 @@ exports.handler = function(context, event, callback) {
     apiKey: context.AIRTABLE_API_KEY //set in our environment variables
   });
 
-  var base = Airtable.base('AIRTABLE_BASE_ID'); //replace with our real base! in airtable API docs
-  createRecord();
+  var base = Airtable.base('AIRTABLE_BASE'); //replace with real base iD! in airtable API docs
   
+  let status = "";
+ 
+  base('Requests').select({  //'Requests' here = the name of the Table, Airtable tab within the Base
+    maxRecords: 1, //querying to see if incoming phone already exists at least once in the Airtable base
+    fields: ["Phone"],
+    filterByFormula: "({Phone} = '" + phone + "')"
+}).firstPage(function(err, records) {
+    if (err) { console.error(err); return; }
+    if (records.length === 0) { //if no records matching incoming phone number
+      status = "Dispatch Needed";
+      createRecord();
+    } else { //else, if at least 1 record matches the incoming phone number, mark as Duplicate 
+      records.forEach(function(record) {
+        console.log('Duplicate', record.id);
+        status = "Duplicate";
+        createRecord();
+      });
+    }
+});
+
   
 function createRecord() {
   console.log("creating record");
   base('Requests').create({ // creates a record (row) in Airtable base
-    "Message": request, // 'Field/column': content 
+    "Message": request, //'Field/column': content 
     "Phone": phone,
-    "Text or Voice?": "text",
     "Twilio Call Sid": twilioSid,
-    "Status": "Dispatch Needed"
+    "Text or Voice?": "text",
+    "Status": status
   }, function(err, record) {
     if (err) {
       console.error(err);
       return;
     }
     console.log(record.getId()); // each record has a unique Airtable ID
-    twiml.message("thank you for reaching out to crown heights mutual aid - a neighbor volunteer will follow up with you soon. stay safe!");
+    twiml.message("thank you for reaching out to crown heights mutual aid - a neighbor volunteer will follow up with you as soon as we can. stay safe!");
     callback(null, twiml);
   });
 
