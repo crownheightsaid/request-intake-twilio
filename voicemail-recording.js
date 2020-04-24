@@ -17,9 +17,29 @@ exports.handler = function(context, event, callback) {
     apiKey: context.AIRTABLE_API_KEY //set in our environment variables
  });
 
- var base = Airtable.base('apppK7mrvMPcwtv6d'); 
+ var base = Airtable.base('AIRTABLE_BASE');  //replace with real Airtable base from API documentation
  
- createRecord();
+ let status = "";
+ 
+ console.log("now looking at Airtable...");
+  base('Requests').select({ //'Requests' here = the name of the Table, Airtable tab
+    maxRecords: 1, //querying to see if incoming phone already exists at least once in the Airtable base
+    fields: ["Phone"],
+    filterByFormula: "({Phone} = '" + phone + "')"
+}).firstPage(function(err, records) {
+    if (err) { console.error(err); return; }
+    if (records.length === 0) { //if no records matching incoming phone number
+      status = "Dispatch Needed";
+      createRecord();
+    } else { //else, if at least 1 record matches the incoming phone number, mark as Duplicate 
+      records.forEach(function(record) {
+        console.log('Duplicate', record.id);
+        status = "Duplicate";
+        createRecord();
+      });
+    }
+});
+ 
  
  function createRecord() {
   console.log("creating record");
@@ -28,7 +48,7 @@ exports.handler = function(context, event, callback) {
     "Phone": phone,
     "Text or Voice?": "voice",
     "Twilio Call Sid": twilioSid,
-    "Status": "Dispatch Needed"
+    "Status": status,
   }, function(err, record) {
     if (err) {
       console.error(err);
